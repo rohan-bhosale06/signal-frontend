@@ -8,7 +8,12 @@ const config: Config = {
     './lib/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        serif: ['Georgia', 'Cambria', '"Times New Roman"', 'serif'],
+        mono: ['"Fira Code"', '"JetBrains Mono"', 'monospace'],
+      },
+    },
   },
   plugins: [typography],
 };

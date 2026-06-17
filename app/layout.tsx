@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import { QueryProvider } from '@/components/QueryProvider';
+import { Providers } from './providers';
+import { Header } from '@/components/layout/Header';
 
 export const metadata: Metadata = {
   title: 'Signal-to-Noise',
@@ -15,7 +16,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="min-h-screen bg-white text-gray-900 antialiased">
-        <QueryProvider>{children}</QueryProvider>
+        <Providers>
+          <Header />
+          {children}
+        </Providers>
       </body>
     </html>
   );

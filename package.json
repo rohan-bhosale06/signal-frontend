@@ -10,7 +10,13 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@radix-ui/react-dialog": "latest",
+    "@radix-ui/react-select": "latest",
     "@tanstack/react-query": "latest",
+    "clsx": "latest",
+    "date-fns": "latest",
+    "isomorphic-dompurify": "latest",
+    "lucide-react": "latest",
     "next": "latest",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"

@@ -1,31 +1,49 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
+import type { Article, ArticleListResponse, SearchResponse } from './types';
 
-export class ApiError extends Error {
-  constructor(
-    public readonly status: number,
-    message: string,
-  ) {
-    super(message);
-    this.name = 'ApiError';
-  }
+const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001';
+
+interface GetArticlesParams {
+  tag?: string;
+  minScore?: number;
+  limit?: number;
+  offset?: number;
 }
 
-export async function apiFetch<T>(
-  path: string,
-  init?: RequestInit,
-): Promise<T> {
-  const res = await fetch(`${API_URL}${path}`, {
-    headers: {
-      'Content-Type': 'application/json',
-      ...init?.headers,
-    },
-    ...init,
-  });
-
-  if (!res.ok) {
-    const body = await res.text();
-    throw new ApiError(res.status, body || res.statusText);
+export async function getArticles(
+  params: GetArticlesParams = {},
+): Promise<ArticleListResponse> {
+  const query = new URLSearchParams();
+  if (params.tag) query.set('tag', params.tag);
+  if (params.minScore !== undefined) {
+    query.set('minScore', String(params.minScore));
   }
+  query.set('limit', String(params.limit ?? 20));
+  query.set('offset', String(params.offset ?? 0));
 
-  return res.json() as Promise<T>;
+  const res = await fetch(`${API_BASE}/articles?${query.toString()}`, {
+    next: { revalidate: 120 },
+  });
+  if (!res.ok) throw new Error(`Failed to fetch articles: ${res.status}`);
+  return res.json() as Promise<ArticleListResponse>;
+}
+
+export async function getArticleById(id: string): Promise<Article | null> {
+  const res = await fetch(`${API_BASE}/articles/${id}`, {
+    next: { revalidate: 300 },
+  });
+  if (res.status === 404) return null;
+  if (!res.ok) throw new Error(`Failed to fetch article: ${res.status}`);
+  return res.json() as Promise<Article>;
+}
+
+export async function searchArticles(
+  q: string,
+  limit = 10,
+): Promise<SearchResponse> {
+  const query = new URLSearchParams({ q, limit: String(limit) });
+  const res = await fetch(`${API_BASE}/articles/search?${query.toString()}`, {
+    cache: 'no-store',
+  });
+  if (!res.ok) throw new Error(`Search failed: ${res.status}`);
+  return res.json() as Promise<SearchResponse>;
 }
