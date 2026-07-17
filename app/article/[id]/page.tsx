@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation';
-import { getArticleById } from '@/lib/api';
+import { getArticleById, getRelatedArticles } from '@/lib/api';
 import { ArticleReader } from '@/components/article/ArticleReader';
 
 export default async function ArticlePage({
@@ -8,9 +8,12 @@ export default async function ArticlePage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const article = await getArticleById(id);
+  const [article, related] = await Promise.all([
+    getArticleById(id),
+    getRelatedArticles(id),
+  ]);
 
   if (!article) notFound();
 
-  return <ArticleReader article={article} />;
+  return <ArticleReader article={article} related={related} />;
 }

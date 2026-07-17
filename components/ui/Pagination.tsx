@@ -8,6 +8,9 @@ interface PaginationProps {
   total: number;
 }
 
+const BUTTON_CLASSES =
+  'rounded-xl border border-zinc-200 bg-white px-4 py-2 text-sm font-medium text-zinc-700 shadow-sm transition-colors hover:bg-zinc-50 disabled:cursor-not-allowed disabled:opacity-40 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200 dark:shadow-none dark:hover:bg-zinc-800';
+
 export function Pagination({ offset, limit, total }: PaginationProps) {
   const router = useRouter();
   const pathname = usePathname();
@@ -30,11 +33,11 @@ export function Pagination({ offset, limit, total }: PaginationProps) {
         type="button"
         onClick={() => goTo(Math.max(0, offset - limit))}
         disabled={!hasPrev}
-        className="rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40"
+        className={BUTTON_CLASSES}
       >
         Previous
       </button>
-      <span className="text-sm text-gray-500">
+      <span className="text-sm text-zinc-500 dark:text-zinc-400">
         {Math.min(offset + 1, total)}–{Math.min(offset + limit, total)} of{' '}
         {total}
       </span>
@@ -42,7 +45,7 @@ export function Pagination({ offset, limit, total }: PaginationProps) {
         type="button"
         onClick={() => goTo(offset + limit)}
         disabled={!hasNext}
-        className="rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40"
+        className={BUTTON_CLASSES}
       >
         Next
       </button>

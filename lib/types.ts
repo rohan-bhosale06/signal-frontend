@@ -15,6 +15,13 @@ export type ContentType =
   | 'repo_highlight'
   | 'other';
 
+export interface ArticleHighlights {
+  problem: string | null;
+  solution: string | null;
+  whyItMatters: string | null;
+  takeaways: string[];
+}
+
 export interface Article {
   id: string;
   sourceId: string;
@@ -23,6 +30,7 @@ export interface Article {
   contentClean: string | null;
   signalScore: number | null;
   summary: string | null;
+  highlights: ArticleHighlights | null;
   fluffReason: string | null;
   contentType: ContentType | null;
   publishedAt: string | null;
@@ -43,3 +51,14 @@ export interface SearchResponse {
   query: string;
   limit: number;
 }
+
+export interface UserPreferences {
+  minSignalScore: number;
+  tags: string[];
+}
+
+export interface BookmarkResponse {
+  data: Article[];
+  total: number;
+}
+

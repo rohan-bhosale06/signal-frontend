@@ -21,7 +21,7 @@ export default async function SearchPage({
 
   return (
     <main className="mx-auto max-w-3xl px-4 py-8">
-      <h1 className="mb-4 text-sm text-gray-500">{`${data.length} results for "${q}"`}</h1>
+      <h1 className="mb-4 text-sm text-zinc-500 dark:text-zinc-400">{`${data.length} results for "${q}"`}</h1>
       <ArticleList
         articles={data}
         total={data.length}

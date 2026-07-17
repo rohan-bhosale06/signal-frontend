@@ -14,10 +14,13 @@ export function formatRelativeTime(date: string | null): string {
 // 80-100: high signal · 50-79: mid signal · 0-49: rarely rendered, filtered
 // from the feed by default (see AI_FILTER_MIN_SCORE on the backend).
 export function scoreToColorClass(score: number | null): string {
-  if (score === null) return 'bg-gray-100 text-gray-600';
-  if (score >= 80) return 'bg-teal-100 text-teal-800';
-  if (score >= 50) return 'bg-amber-100 text-amber-800';
-  return 'bg-gray-100 text-gray-600';
+  if (score === null)
+    return 'bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400';
+  if (score >= 80)
+    return 'bg-teal-100 text-teal-800 dark:bg-teal-950 dark:text-teal-300 dark:ring-1 dark:ring-teal-800';
+  if (score >= 50)
+    return 'bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300 dark:ring-1 dark:ring-amber-800';
+  return 'bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400';
 }
 
 export const CONTENT_TYPE_LABELS: Record<string, string> = {

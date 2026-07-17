@@ -49,13 +49,13 @@ export function FeedFilters({ activeTag, activeMinScore }: FeedFiltersProps) {
     <div className="mb-6 flex flex-wrap items-center gap-3">
       <Select.Root
         value={activeTag ?? 'all'}
-        onValueChange={(value) =>
-          updateParam('tag', value === 'all' ? undefined : value)
-        }
+        // "all" is passed through explicitly (?tag=all) — deleting the param
+        // would let a signed-in user's saved preference tag reassert itself.
+        onValueChange={(value) => updateParam('tag', value)}
       >
         <Select.Trigger
           aria-label="Filter by tag"
-          className="inline-flex items-center gap-1 rounded-md border border-gray-300 px-3 py-1.5 text-sm text-gray-700 hover:bg-gray-50"
+          className="inline-flex items-center gap-1 rounded-xl border border-zinc-200 bg-white px-3 py-1.5 text-sm text-zinc-700 shadow-sm transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200 dark:shadow-none dark:hover:bg-zinc-800"
         >
           <Select.Value placeholder="All tags" />
           <Select.Icon>
@@ -63,11 +63,11 @@ export function FeedFilters({ activeTag, activeMinScore }: FeedFiltersProps) {
           </Select.Icon>
         </Select.Trigger>
         <Select.Portal>
-          <Select.Content className="overflow-hidden rounded-md border border-gray-200 bg-white shadow-lg">
+          <Select.Content className="overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-lg dark:border-zinc-700 dark:bg-zinc-900">
             <Select.Viewport className="p-1">
               <Select.Item
                 value="all"
-                className="flex cursor-pointer items-center justify-between rounded-sm px-3 py-1.5 text-sm text-gray-700 outline-none data-[highlighted]:bg-gray-100"
+                className="flex cursor-pointer items-center justify-between rounded-lg px-3 py-1.5 text-sm text-zinc-700 outline-none data-[highlighted]:bg-zinc-100 dark:text-zinc-200 dark:data-[highlighted]:bg-zinc-800"
               >
                 <Select.ItemText>All tags</Select.ItemText>
                 <Select.ItemIndicator>
@@ -78,7 +78,7 @@ export function FeedFilters({ activeTag, activeMinScore }: FeedFiltersProps) {
                 <Select.Item
                   key={tag}
                   value={tag}
-                  className="flex cursor-pointer items-center justify-between rounded-sm px-3 py-1.5 text-sm text-gray-700 outline-none data-[highlighted]:bg-gray-100"
+                  className="flex cursor-pointer items-center justify-between rounded-lg px-3 py-1.5 text-sm text-zinc-700 outline-none data-[highlighted]:bg-zinc-100 dark:text-zinc-200 dark:data-[highlighted]:bg-zinc-800"
                 >
                   <Select.ItemText>{tag}</Select.ItemText>
                   <Select.ItemIndicator>
@@ -91,17 +91,17 @@ export function FeedFilters({ activeTag, activeMinScore }: FeedFiltersProps) {
         </Select.Portal>
       </Select.Root>
 
-      <div className="inline-flex rounded-md border border-gray-300 p-0.5">
+      <div className="inline-flex rounded-xl border border-zinc-200 bg-white p-0.5 shadow-sm dark:border-zinc-700 dark:bg-zinc-900 dark:shadow-none">
         {SCORE_OPTIONS.map((option) => (
           <button
             key={option.value}
             type="button"
             onClick={() => updateParam('minScore', String(option.value))}
             className={cn(
-              'rounded px-3 py-1 text-sm font-medium transition-colors',
+              'rounded-lg px-3 py-1 text-sm font-medium transition-colors',
               activeMinScore === option.value
-                ? 'bg-gray-900 text-white'
-                : 'text-gray-600 hover:bg-gray-100',
+                ? 'bg-teal-600 text-white dark:bg-teal-500 dark:text-zinc-950'
+                : 'text-zinc-600 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-800',
             )}
           >
             {option.label}
