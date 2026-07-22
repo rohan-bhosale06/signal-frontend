@@ -169,12 +169,22 @@ export function ArticleReader({
           )}
         </div>
       ) : (
-        !article.summary && (
+        !article.summary &&
+        (article.isProcessed ? (
+          // Processed but no highlights — genuinely filtered out (fluff), not
+          // a pending state. Showing "still in queue" here would be a lie:
+          // this article will never get highlights.
+          <p className="mt-8 text-zinc-500 dark:text-zinc-400">
+            This article didn&apos;t meet our signal bar
+            {article.fluffReason ? ` (${article.fluffReason})` : ''} — read
+            the original above.
+          </p>
+        ) : (
           <p className="mt-8 text-zinc-500 dark:text-zinc-400">
             Highlights aren&apos;t available yet — this article is still in the
             AI processing queue. Read the original above.
           </p>
-        )
+        ))
       )}
 
       {/* Full extracted text, collapsed by default */}
